@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendar - Classroom 4/10</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+      --primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --primary-solid: #3b82f6;
+      --primary-bright: #60a5fa;
+      --secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      --accent: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --blog: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+      
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.9);
+      
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      
+      --border: #e2e8f0;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+      
+      --radius: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+      /* Subject colors */
+      --math: #3b82f6;
+      --thai: #10b981;
+      --english: #8b5cf6;
+      --science: #f59e0b;
+      --social: #ef4444;
+      --pe: #06b6d4;
+      --cooking: #f97316;
+      --tech: #6366f1;
+      --art: #ec4899;
+      --business: #059669;
+      --ethics: #7c3aed;
+      --guidance: #84cc16;
+      --history: #dc2626;
+      --health: #14b8a6;
+      --club: #f59e0b;
+      --law: #1f2937;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, rgba(240, 249, 255, 0.9) 0%, rgba(224, 231, 255, 0.6) 100%);
+      padding: 2rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('classpic.jpg') center/cover no-repeat;
+      opacity: 0.1;
+      z-index: 1;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    /* Back Button */
+    .back-btn {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+      z-index: 3;
+    }
+
+    .back-btn:hover {
+      background: var(--primary-solid);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Calendar Grid */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .day-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .day-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary-bright);
+    }
+
+    .day-card.today {
+      border-color: var(--primary-solid);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    }
+
+    .day-card.today::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .day-name {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .day-icon {
+      font-size: 1.5rem;
+      color: var(--primary-solid);
+    }
+
+    .today-badge {
+      background: var(--primary-solid);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Subject List */
+    .subjects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .subject-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .subject-item:hover {
+      background: #f1f5f9;
+      border-color: var(--primary-bright);
+      transform: translateX(4px);
+    }
+
+    .subject-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .subject-name {
+      font-weight: 500;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .period-number {
+      margin-left: auto;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: var(--border);
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    /* Subject color mapping */
+    .subject-item[data-subject*="คณิต"] .subject-dot { background-color: var(--math); }
+    .subject-item[data-subject*="ไทย"] .subject-dot { background-color: var(--thai); }
+    .subject-item[data-subject*="อังกฤษ"] .subject-dot,
+    .subject-item[data-subject*="English"] .subject-dot { background-color: var(--english); }
+    .subject-item[data-subject*="วิทย์"] .subject-dot { background-color: var(--science); }
+    .subject-item[data-subject*="สังคม"] .subject-dot { background-color: var(--social); }
+    .subject-item[data-subject*="พละ"] .subject-dot { background-color: var(--pe); }
+    .subject-item[data-subject*="cooking"] .subject-dot { background-color: var(--cooking); }
+    .subject-item[data-subject*="เทคโน"] .subject-dot { background-color: var(--tech); }
+    .subject-item[data-subject*="ศิลปะ"] .subject-dot { background-color: var(--art); }
+    .subject-item[data-subject*="Business"] .subject-dot { background-color: var(--business); }
+    .subject-item[data-subject*="จริยธรรม"] .subject-dot { background-color: var(--ethics); }
+    .subject-item[data-subject*="แนะแนว"] .subject-dot { background-color: var(--guidance); }
+    .subject-item[data-subject*="ประวัติ"] .subject-dot { background-color: var(--history); }
+    .subject-item[data-subject*="สุขศึกษา"] .subject-dot { background-color: var(--health); }
+    .subject-item[data-subject*="ชุมนุม"] .subject-dot { background-color: var(--club); }
+    .subject-item[data-subject="วิชาธุรกิจ"] .subject-dot { background-color: var(--law); }
+
+    /* Stats Section */
+    .stats-section {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Legend */
+    .legend {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-top: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .legend h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .calendar-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .day-card { padding: 1rem; }
+      .back-btn { 
+        position: fixed;
+        top: 0.75rem;     /* Reduced from 1rem */
+        left: 0.75rem;    /* Reduced from 1rem */
+        margin: 0;
+        z-index: 100;
+        padding: 0.5rem 1rem; /* Reduced from 0.75rem 1.5rem */
+        font-size: 0.9rem;    /* Reduced font size */
+      }
+      
+      .back-btn i {
+        font-size: 0.8rem;  /* Smaller icon */
+      }
+      
+      .header {
+        padding-top: 3.5rem; /* Reduced from 4rem to match smaller button */
+        padding-left: 1rem;
+      }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .legend-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      
+      .stat-item {
+        margin: 0;
+      }
+    }
+
+    /* Animation */
+    .day-card {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .day-card:nth-child(1) { animation-delay: 0.1s; }
+    .day-card:nth-child(2) { animation-delay: 0.2s; }
+    .day-card:nth-child(3) { animation-delay: 0.3s; }
+    .day-card:nth-child(4) { animation-delay: 0.4s; }
+    .day-card:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Additional styles to disable right-click and keyboard shortcuts */
+    * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    body {
+      -webkit-touch-callout: none;
+      -webkit-text-size-adjust: none;
+    }
+  </style>
+  <!-- Font Awesome CDN -->
+  <script src="https://kit.fontawesome.com/9f295c42cb.js" crossorigin="anonymous"></script>
+  <script>
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    // Disable keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Prevent F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Prevent Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U
+      if (e.ctrlKey && (
+        e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C') || 
+        e.key === 'u'
+      )) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Detect DevTools
+    let devtools = function() {};
+    devtools.toString = function() {
+      document.body.innerHTML = 'DevTools detected!';
+      return '';
+    };
+    console.log('%c', devtools);
+  </script>
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <a href="index.html" class="back-btn">
+      <i class="fas fa-arrow-left"></i>
+      Back to Home
+    </a>
+    <div class="header-content">
+      <h1><i class="fas fa-calendar-alt" style="margin-right: 0.5rem;"></i>Class Schedule</h1>
+      <p>Weekly timetable for Class 4/10</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-number" id="totalSubjects">0</span>
+          <div class="stat-label">Total Subjects</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="periodsPerWeek">0</span>
+          <div class="stat-label">Periods/Week</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="currentDay">-</span>
+          <div class="stat-label">Today</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="todayPeriods">0</span>
+          <div class="stat-label">Today's Classes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calendar Grid -->
+    <section class="calendar-grid" id="calendarGrid">
+      <!-- Days will be populated by JavaScript -->
+    </section>
+
+    <!-- Legend -->
+    <section class="legend">
+      <h3><i class="fas fa-info-circle" style="color: var(--primary-solid); margin-right: 0.5rem;"></i>Subject Color Guide</h3>
+      <div class="legend-grid" id="legendGrid">
+        <!-- Legend items will be populated by JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Schedule data
+    const weeklySchedule = {
+      'Monday': [
+        'วิทย์',
+        'ไทย',
+        'ไทยเสริม',
+        'Business English',
+        'ชุมนุม'
+      ],
+      'Tuesday': [
+        'อังกฤษพื้นฐาน',
+        'สุขศึกษา',
+        'คณิต',
+        'สังคม',
+        'cooking studio',
+        'พละ'
+      ],
+      'Wednesday': [
+        'ประวัติ',
+        'คณิต',
+        'อังกฤษเสริม',
+        'Business English',
+        'สังคม',
+        'ไทยหลัก'
+      ],
+      'Thursday': [
+        'อังกฤษพื้นฐาน',
+        'เทคโน',
+        'แนะแนว',
+        'วิทย์',
+        'cooking lab',
+        'จริยธรรม'
+      ],
+      'Friday': [
+        'cooking studio',
+        'วิชาธุรกิจ', // changed from 'กฎหมายธุรกิจ'
+        'ไทยเสริม',
+        'ศิลปะ'
+      ]
+    };
+
+    // Subject color mapping
+    const subjectColors = {
+      'คณิต': '#3b82f6',
+      'ไทย': '#10b981',
+      'ไทยเสริม': '#10b981',
+      'ไทยหลัก': '#10b981',
+      'อังกฤษพื้นฐาน': '#8b5cf6',
+      'อังกฤษเสริม': '#8b5cf6',
+      'Business English': '#059669',
+      'วิทย์': '#f59e0b',
+      'สังคม': '#ef4444',
+      'พละ': '#06b6d4',
+      'cooking studio': '#f97316',
+      'cooking lab': '#f97316',
+      'เทคโน': '#6366f1',
+      'ศิลปะ': '#ec4899',
+      'จริยธรรม': '#7c3aed',
+      'แนะแนว': '#84cc16',
+      'ประวัติ': '#dc2626',
+      'สุขศึกษา': '#14b8a6',
+      'ชุมนุม': '#f59e0b',
+      'วิชาธุรกิจ': '#1f2937' // changed from 'กฎหมายธุรกิจ'
+    };
+
+    // Day icons
+    const dayIcons = {
+      'Monday': 'fas fa-moon',
+      'Tuesday': 'fas fa-fire',
+      'Wednesday': 'fas fa-star',
+      'Thursday': 'fas fa-bolt',
+      'Friday': 'fas fa-heart'
+    };
+
+    function getCurrentDay() {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[new Date().getDay()];
+    }
+
+    function renderCalendar() {
+      const calendarGrid = document.getElementById('calendarGrid');
+      const currentDay = getCurrentDay();
+      
+      Object.entries(weeklySchedule).forEach(([day, subjects]) => {
+        const dayCard = document.createElement('div');
+        dayCard.className = `day-card ${day === currentDay ? 'today' : ''}`;
+        
+        const dayHeader = `
+          <div class="day-header">
+            <div>
+              <div class="day-name">${day}</div>
+              ${day === currentDay ? '<span class="today-badge">Today</span>' : ''}
+            </div>
+            <i class="${dayIcons[day]}"></i>
+          </div>
+        `;
+        
+        const subjectsList = subjects.map((subject, index) => `
+          <div class="subject-item" data-subject="${subject}">
+            <div class="subject-dot"></div>
+            <span class="subject-name">${subject}</span>
+            <span class="period-number">Period ${index + 1}</span>
+          </div>
+        `).join('');
+        
+        dayCard.innerHTML = `
+          ${dayHeader}
+          <div class="subjects-list">
+            ${subjectsList}
+          </div>
+        `;
+        
+        calendarGrid.appendChild(dayCard);
+      });
+    }
+
+    function renderLegend() {
+      const legendGrid = document.getElementById('legendGrid');
+      const uniqueSubjects = [...new Set(Object.values(weeklySchedule).flat())];
+      
+      uniqueSubjects.forEach(subject => {
+        const legendItem = document.createElement('div');
+        legendItem.className = 'legend-item';
+        legendItem.innerHTML = `
+          <div class="legend-dot" style="background-color: ${subjectColors[subject] || '#64748b'}"></div>
+          <span>${subject}</span>
+        `;
+        legendGrid.appendChild(legendItem);
+      });
+    }
+
+    function updateStats() {
+      const allSubjects = Object.values(weeklySchedule).flat();
+      const uniqueSubjects = [...new Set(allSubjects)];
+      const currentDay = getCurrentDay();
+      const todaySubjects = weeklySchedule[currentDay] || [];
+      
+      document.getElementById('totalSubjects').textContent = uniqueSubjects.length;
+      document.getElementById('periodsPerWeek').textContent = allSubjects.length;
+      document.getElementById('currentDay').textContent = currentDay.slice(0, 3);
+      document.getElementById('todayPeriods').textContent = todaySubjects.length;
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      renderCalendar();
+      renderLegend();
+      updateStats();
+    });
+  </script>
+</body>
+</html>
