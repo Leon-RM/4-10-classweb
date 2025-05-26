@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Classweb 4/10 - เว็บไซต์ห้อง</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+      --primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --primary-solid: #3b82f6;
+      --primary-bright: #60a5fa;
+      --secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      --accent: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --blog: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+      
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.9);
+      
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      
+      --border: #e2e8f0;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+      
+      --radius: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-touch-callout: none;
+      -webkit-text-size-adjust: none;
+    }
+
+    /* Header */
+    .header {
+      position: relative;
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(240, 249, 255, 0.9) 0%, rgba(224, 231, 255, 0.6) 100%);
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('classpic.jpg') center/cover no-repeat;
+      opacity: 0.2;
+      z-index: 1;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .header p {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section {
+      padding: 3rem 0;
+    }
+
+    /* Menu Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .menu-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .menu-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary-bright);
+    }
+
+    .menu-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-solid);
+      display: block;
+    }
+
+    .menu-card h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .menu-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .menu-card.daily-reports .icon { color: var(--primary-solid); }
+    .menu-card.subjects .icon { color: #10b981; }
+    .menu-card.calendar .icon { color: #f59e0b; }
+    .menu-card.blog .icon { color: #ef4444; }
+    .menu-card.directory .icon { color: #8b5cf6; }
+
+    /* Content Sections */
+    .content-section {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-top: 2rem;
+      box-shadow: var(--shadow);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .content-section.active {
+      max-height: 2000px;
+      opacity: 1;
+    }
+
+    .content-section h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap; /* Allows buttons to wrap on smaller screens if needed */
+    }
+
+    /* Report Cards */
+    .report-card, .blog-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .report-card:hover, .blog-card:hover {
+      background: #f1f5f9;
+      border-color: var(--primary-bright);
+      transform: translateX(4px);
+    }
+
+    .report-header, .blog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .report-date, .blog-date {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+
+    .badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge.today { background: var(--success); color: white; }
+    .badge.yesterday { background: var(--warning); color: white; }
+    .badge.date { background: var(--primary-solid); color: white; }
+
+    .report-content, .blog-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      color: var(--text-secondary);
+    }
+
+    .report-card.expanded .report-content,
+    .blog-card.expanded .blog-content {
+      max-height: 800px;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Blog specific styles */
+    .blog-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .blog-author {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--primary-solid);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container { padding: 0 1rem; }
+      .section { padding: 2rem 0; }
+      .menu-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .menu-card { padding: 1.5rem; }
+      .content-section { padding: 1.5rem; }
+      .header { height: 60vh; }
+
+      .content-section h2 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .search-controls {
+        margin-left: 0;
+        width: 100%;
+        flex-wrap: wrap; /* Allow wrapping on mobile only */
+      }
+
+      .search-input {
+        width: 100%; /* Full width only on mobile */
+      }
+    }
+
+    /* Button styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      background: var(--primary-solid);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-bright);
+      transform: translateY(-1px);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); /* Blue glow effect */
+    }
+    .btn-secondary {
+      background: var(--primary-solid);
+      color: white;
+      padding: 0.5rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;  /* Centers text */
+      gap: 0.5rem;
+      min-width: 100px;  /* Ensures consistent width */
+    }
+    .btn-secondary:hover {
+      background: var(--primary-bright);
+      transform: translateY(-1px);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--primary-solid);
+      border: 1px solid var(--primary-solid);
+    }
+    .btn-outline:hover {
+      background: var(--primary-solid);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+      color: var(--text-muted);
+    }
+
+    * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Add this in the style section */
+    .search-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: auto;
+      flex-wrap: nowrap; /* Changed from wrap to nowrap to keep items in line */
+    }
+
+    .date-input {
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    .date-input:focus {
+      outline: none;
+      border-color: var(--primary-bright);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+
+    .search-input {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      width: 180px; /* Changed from min-width: 200px to a fixed width */
+      background: var(--bg-secondary);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-bright);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+  </style>
+  <!-- Font Awesome CDN -->
+  <script src="https://kit.fontawesome.com/9f295c42cb.js" crossorigin="anonymous"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <script>
+    // Disable right-click
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    // Disable key combinations
+    document.addEventListener('keydown', (e) => {
+      // Disable F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Disable Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U
+      if (e.ctrlKey && (
+        e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C') || 
+        e.key === 'u'
+      )) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Additional protection
+    window.addEventListener('devtoolschange', function(e) {
+      if (e.detail.open) {
+        document.documentElement.innerHTML = 'DevTools detected!';
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="header-content">
+      <h1>👋Welcome to 4/10!!</h1>
+      <p>เว็บไซต์ห้องนักธุรกิจล้านล้าน🤓</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Menu Section -->
+    <section class="section">
+      <div class="menu-grid">
+        <div class="menu-card daily-reports" id="dailyReportsCard">
+          <i class="fas fa-clipboard-list icon"></i>
+          <h3>📑Daily Reports</h3>
+          <p>รายงานการบ้านและงานที่ครูสั่งในแต่ละวัน</p>
+        </div>
+        
+        <div class="menu-card subjects" onclick="window.location.href='subjects.html'">
+          <i class="fas fa-book-open icon"></i>
+          <h3>📚Subjects</h3>
+          <p>รวบรวมรายวิชาทั้งหมดพร้อมทุกงานที่ครูสั่ง</p>
+        </div>
+        
+        <div class="menu-card calendar" onclick="window.location.href='calendar.html'">
+          <i class="fas fa-calendar-alt icon"></i>
+          <h3>🗓️Calendar</h3>
+          <p>ตารางวิชาที่เรียนในแต่ละวัน</p>
+        </div>
+        
+        <div class="menu-card blog" onclick="window.location.href='blog.html'">
+          <i class="fas fa-edit icon"></i>
+          <h3>📖Class Blog</h3>
+          <p>แชร์เรื่องราวในห้อง และอื่นๆ</p>
+        </div>
+        
+        <div class="menu-card directory">
+          <i class="fas fa-users icon"></i>
+          <h3>🧑‍🎓Class Members (Unavailable)</h3>
+          <p>ชมาชิกในห้องและครู</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily Reports Section -->
+    <section class="content-section" id="reportsSection">
+      <h2>
+        <i class="fas fa-clipboard-list" style="color: var(--primary-solid); margin-right: 0.5rem;"></i>📑Daily Work Reports
+        <div class="search-controls">
+          <input type="date" id="reportDateInput" class="date-input" aria-label="Select date">
+          <button class="btn btn-secondary" id="searchDateBtn" style="font-size: 0.9rem;">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+          </button>
+          <button class="btn btn-outline" id="resetSearchBtn" style="font-size: 0.8rem; padding: 0.5rem 1rem; display: none;">
+            <i class="fas fa-undo"></i> Show All
+          </button>
+        </div>
+      </h2>
+      <div id="reportsContainer">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="content-section" id="blogSection">
+      <h2>
+        <i class="fas fa-edit" style="color: #ef4444; margin-right: 0.5rem;"></i>📖Class Blog Posts
+        <div class="search-controls">
+          <input type="text" id="blogSearchInput" class="search-input" placeholder="Search posts..." aria-label="Search blog posts">
+          <button class="btn btn-secondary" id="searchBlogBtn">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+          </button>
+          <button class="btn btn-outline" id="resetBlogSearchBtn" style="display: none;">
+            <i class="fas fa-undo"></i>
+            <span>Show All</span>
+          </button>
+        </div>
+      </h2>
+      <div style="margin-bottom: 1.5rem;">
+        <button class="btn btn-primary" id="addPostBtn">
+          <i class="fas fa-plus"></i>
+          New Post 📝
+        </button>
+      </div>
+      <div id="blogContainer">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="footer" style="background-color: #333; color: #fff; padding: 1rem 0;">
+    <div class="container">
+      <p>&copy; 2025 Classroom 4/10. Created by Leon (ลีออง)</a>.</p>
+      <p><a href="https://web.facebook.com/leon.ratthabhumin/" target="_blank" rel="noopener noreferrer" style="color: #ffffff;">Facebook</a></p>
+      <p><a href="https://www.instagram.com/le0n_rm/" target="_blank" rel="noopener noreferrer" style="color: #ffffff;">Instagram</a></p>
+      <p>Suankularb 14. Room Number 533</a>.</p>
+    </div>
+  </footer>
+  
+  <script>
+    // Firebase Configuration - Replace with your own
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPc5zKZzmre8sfAwx03x0jH3i1eVRAnec",
+      authDomain: "classweb-81bbb.firebaseapp.com",
+      projectId: "classweb-81bbb",
+      databaseURL: "https://classweb-81bbb-default-rtdb.asia-southeast1.firebasedatabase.app/",
+      storageBucket: "classweb-81bbb.firebasestorage.app",
+      messagingSenderId: "488267142455",
+      appId: "1:488267142455:web:f1c4f4fdbdfc097a3636b2"
+    };
+
+    // Initialize Firebase (when scripts are loaded)
+    let db;
+    let isFirebaseReady = false;
+
+    function initFirebase() {
+      try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+        isFirebaseReady = true;
+        console.log('Firebase initialized successfully');
+      } catch (error) {
+        console.log('Firebase initialization failed:', error);
+      }
+    }
+
+    // Initialize when page loads
+    window.addEventListener('load', initFirebase);
+
+    // Elements
+    const dailyReportsCard = document.getElementById('dailyReportsCard');
+    const reportsSection = document.getElementById('reportsSection');
+    const reportsContainer = document.getElementById('reportsContainer');
+    const searchDateBtn = document.getElementById('searchDateBtn');
+    const resetSearchBtn = document.getElementById('resetSearchBtn');
+    
+    let reportsLoaded = false;
+    let allFetchedReports = null; // To store all reports for searching
+
+    // Event Listeners
+    dailyReportsCard.addEventListener('click', () => toggleSection('reports'));
+    searchDateBtn.addEventListener('click', handleSearchDate);
+    resetSearchBtn.addEventListener('click', () => handleResetSearch(true));
+
+    function toggleSection(type) {
+      // When a section is toggled, ensure the report search is reset to show all
+      handleResetSearch(false); // Pass false to not scroll if section is closing
+      if (type === 'reports') {
+        const isActive = reportsSection.classList.contains('active');
+        
+        if (isActive) {
+          reportsSection.classList.remove('active');
+        } else {
+          reportsSection.classList.add('active');
+          
+          if (!reportsLoaded) {
+            loadReports();
+            reportsLoaded = true;
+          }
+          
+          if (isActive === false) { // Only scroll if opening
+            setTimeout(() => {
+              reportsSection.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+              });
+            }, 100);
+          }
+        }
+      } else if (type === 'blog') {
+        const isActive = blogSection.classList.contains('active');
+        
+        // Close reports if open
+        reportsSection.classList.remove('active');
+        
+        if (isActive) {
+          blogSection.classList.remove('active');
+        } else {
+          blogSection.classList.add('active');
+          
+          if (!blogLoaded) {
+            loadBlogPosts();
+            blogLoaded = true;
+          }
+          
+          if (isActive === false) { // Only scroll if opening
+            setTimeout(() => {
+              blogSection.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+              });
+            }, 100);
+          }
+        }
+      }
+    }
+
+    function loadReports() {
+      if (isFirebaseReady) {
+        db.ref('dailyReports').orderByKey().once('value')
+          .then(snapshot => {
+            const reports = snapshot.val();
+            allFetchedReports = reports; // Store for searching
+            renderReports(allFetchedReports);
+          })
+          .catch(error => {
+            console.error('Error loading reports:', error);
+            loadDemoReports();
+          });
+      } else {
+        loadDemoReports();
+      }
+    }
+
+    function loadBlogPosts() {
+      if (isFirebaseReady) {
+        db.ref('blogPosts').orderByChild('timestamp').once('value')
+          .then(snapshot => {
+            const posts = snapshot.val();
+            allBlogPosts = posts; // Store for searching
+            renderBlogPosts(posts);
+          })
+          .catch(error => {
+            console.error('Error loading blog posts:', error);
+            loadDemoBlog();
+          });
+      } else {
+        loadDemoBlog();
+      }
+    }
+
+    function loadDemoReports() {
+      const demoReports = {
+        '2024-12-20': {
+          'Math': 'Linear equations exercises pages 45-50',
+          'Thai': 'Reading Thai literature article',
+          'English': 'Grammar exercises unit 5',
+          'Science': 'Force and motion experiment'
+        },
+        '2024-12-19': {
+          'Social': 'Study Thai history - Sukhothai period',
+          'Art': 'Nature drawing assignment',
+          'PE': 'Basketball practice'
+        }
+      };
+      
+      allFetchedReports = demoReports; // Store for searching
+      renderReports(allFetchedReports);
+    }
+
+    function loadDemoBlog() {
+      const demoPosts = {
+        'post1': {
+          title: 'Our Amazing Science Fair Project',
+          content: 'Today we presented our volcano project at the science fair. It was exciting to see everyone\'s reactions when our volcano erupted! We learned so much about chemical reactions.',
+          author: 'Student Team A',
+          timestamp: Date.now() - 86400000,
+          date: '2024-12-19'
+        },
+        'post2': {
+          title: 'Field Trip to the Museum',
+          content: 'What an incredible day at the National Museum! We saw ancient artifacts and learned about our country\'s rich history. The Egyptian mummy exhibit was particularly fascinating.',
+          author: 'Class Reporter',
+          timestamp: Date.now() - 172800000,
+          date: '2024-12-18'
+        }
+      };
+      
+      allBlogPosts = demoPosts; // Store for searching
+      renderBlogPosts(demoPosts);
+    }
+
+    function renderReports(reportsToDisplay) {
+      reportsContainer.innerHTML = '';
+      
+      if (!reportsToDisplay || Object.keys(reportsToDisplay).length === 0) {
+        reportsContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <p>No reports available yet</p>
+          </div>
+        `;
+        return;
+      }
+
+      const sortedReports = Object.entries(reportsToDisplay)
+        .sort(([a], [b]) => new Date(b) - new Date(a));
+
+      const today = new Date().toISOString().slice(0, 10);
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+      sortedReports.forEach(([date, data]) => {
+        createReportCard(date, data, today, yesterday);
+      });
+    }
+
+    function renderBlogPosts(posts) {
+      blogContainer.innerHTML = '';
+      
+      if (!posts) {
+        blogContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-blog"></i>
+            <p>No blog posts yet. Be the first to share!</p>
+          </div>
+        `;
+        return;
+      }
+
+      const sortedPosts = Object.entries(posts)
+        .sort(([,a], [,b]) => b.timestamp - a.timestamp);
+
+      sortedPosts.forEach(([id, post]) => {
+        createBlogCard(id, post);
+      });
+    }
+
+    function createReportCard(date, data, today, yesterday) {
+      const card = document.createElement('div');
+      card.className = 'report-card';
+      
+      const badge = getBadgeInfo(date, today, yesterday);
+      const formattedDate = formatDate(date);
+      
+      card.innerHTML = `
+        <div class="report-header">
+          <div class="report-date">${formattedDate}</div>
+          <div class="badge ${badge.class}">${badge.text}</div>
+        </div>
+        <div class="report-content">
+          ${formatReportContent(data)}
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        card.classList.toggle('expanded');
+      });
+
+      reportsContainer.appendChild(card);
+    }
+
+    function createBlogCard(id, post) {
+      const card = document.createElement('div');
+      card.className = 'blog-card';
+      
+      const formattedDate = new Date(post.timestamp).toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      
+      card.innerHTML = `
+        <div class="blog-header">
+          <div>
+            <div class="blog-title">${post.title}</div>
+            <div class="blog-author">by ${post.author}</div>
+          </div>
+          <div class="blog-date">${formattedDate}</div>
+        </div>
+        <div class="blog-content">
+          <p>${post.content}</p>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        card.classList.toggle('expanded');
+      });
+
+      blogContainer.appendChild(card);
+    }
+
+    function getBadgeInfo(date, today, yesterday) {
+      if (date === today) return { class: 'today', text: 'Today' };
+      if (date === yesterday) return { class: 'yesterday', text: 'Yesterday' };
+      return { class: 'date', text: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) };
+    }
+
+    function formatDate(dateStr) {
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      };
+      return new Date(dateStr).toLocaleDateString('en-US', options);
+    }
+
+    function formatReportContent(data) {
+      if (typeof data === 'string') return `<p>${data}</p>`;
+      
+      if (typeof data === 'object') {
+        return Object.entries(data)
+          .map(([subject, content]) => `
+            <div style="margin-bottom: 1rem;">
+              <strong style="color: var(--primary-solid);">${subject}:</strong>
+              <p style="margin-top: 0.5rem;">${content}</p>
+            </div>
+          `).join('');
+      }
+      
+      return `<p>${JSON.stringify(data)}</p>`;
+    }
+
+    function showAddPostDialog() {
+      const title = prompt('(⚠️โปรดอย่าปั่น) ใส่ชื่อเรื่อง:');
+      if (!title) return;
+      
+      const content = prompt('ใส่เนื้อหาที่จะเล่า:');
+      if (!content) return;
+      
+      const author = prompt('ใส่ชื่อผู้เขียน:') || 'Anonymous';
+      
+      const post = {
+        title: title,
+        content: content,
+        author: author,
+        timestamp: Date.now(),
+        date: new Date().toISOString().slice(0, 10)
+      };
+      
+      if (isFirebaseReady) {
+        db.ref('blogPosts').push(post)
+          .then(() => {
+            loadBlogPosts();
+          })
+          .catch(error => {
+            console.error('Error adding post:', error);
+            alert('Failed to add post. Please try again.');
+          });
+      } else {
+        // For demo, just add to the current view
+        const postId = 'demo_' + Date.now();
+        createBlogCard(postId, post);
+      }
+    }
+
+    // Search and Reset Functionality for Reports
+    function handleSearchDate() {
+      if (!allFetchedReports) {
+        alert('Reports are still loading or not available. Please try again shortly.');
+        return;
+      }
+      
+      const dateInput = document.getElementById('reportDateInput');
+      const dateQuery = dateInput.value;
+      
+      if (!dateQuery) {
+        alert('Please select a date');
+        return;
+      }
+
+      const reportForDate = allFetchedReports[dateQuery];
+      
+      if (reportForDate) {
+        const filteredReports = { [dateQuery]: reportForDate };
+        renderReports(filteredReports);
+        resetSearchBtn.style.display = 'inline-flex';
+      } else {
+        reportsContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <p>No report found for ${dateQuery}</p>
+          </div>
+        `;
+        resetSearchBtn.style.display = 'inline-flex';
+      }
+    }
+
+    document.getElementById('reportDateInput').addEventListener('change', function() {
+      if (this.value) {
+        handleSearchDate();
+      }
+    });
+
+    function handleResetSearch(shouldScroll = true) {
+      if (allFetchedReports) {
+        renderReports(allFetchedReports);
+      }
+      resetSearchBtn.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

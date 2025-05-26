@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Subjects - Classroom 4/10</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+      --primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --primary-solid: #3b82f6;
+      --primary-bright: #60a5fa;
+      --secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      --accent: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.9);
+      
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      
+      --border: #e2e8f0;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+      
+      --radius: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, rgba(240, 249, 255, 0.9) 0%, rgba(224, 231, 255, 0.6) 100%);
+      padding: 4rem 0 3rem; /* Increased top padding */
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      padding-top: 1rem; /* Add space between back button and content */
+    }
+
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .back-btn {
+      position: fixed; /* Changed from absolute to fixed */
+      left: 1.5rem;
+      top: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem; /* Smaller padding */
+      background: var(--bg-card); /* Changed from primary-solid to bg-card */
+      border: 2px solid var(--border); /* Added border */
+      color: var(--text-primary); /* Changed from white to text-primary */
+      text-decoration: none;
+      border-radius: var(--radius);
+      font-weight: 500;
+      transition: var(--transition);
+      z-index: 100;
+      font-size: 0.9rem; /* Smaller font size */
+      box-shadow: var(--shadow);
+    }
+
+    .back-btn:hover {
+      background: var(--bg-secondary); /* Changed hover effect */
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem 0;
+    }
+
+        .subject-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      align-self: start;
+      /* Only transition specific properties for hover, not 'all' to avoid animating height changes from grid stretch */
+      transition-property: transform, box-shadow, border-color;
+      transition-duration: 0.2s;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+
+    .subject-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary-bright);
+    }
+
+    .subject-header {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .subject-name {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .subject-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .assignment-count {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .assignments-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .subject-card.expanded .assignments-list {
+      max-height: 400px;
+    }
+
+    .assignment-item {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+      transition: var(--transition);
+    }
+
+    .assignment-item:hover {
+      background: rgba(59, 130, 246, 0.02);
+    }
+
+    .assignment-item:last-child {
+      border-bottom: none;
+    }
+
+    .assignment-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+    }
+
+    .assignment-content {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .no-assignments {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .expand-indicator {
+      float: right;
+      transition: transform 0.3s ease;
+      color: var(--text-muted);
+    }
+
+    .subject-card.expanded .expand-indicator {
+      transform: rotate(180deg);
+    }
+
+    /* Subject Icons Colors */
+    .subject-card[data-subject="คณิต"] .subject-icon { color: #3b82f6; } /* คันิต */
+    .subject-card[data-subject="ไทย"] .subject-icon { color: #ef4444; } /* ไทย */
+    .subject-card[data-subject="ไทยเสริม"] .subject-icon { color: #f59e0b; } /* ไทยเสริม */
+    .subject-card[data-subject="วิทย์"] .subject-icon { color: #10b981; } /* วิทย์ */
+    .subject-card[data-subject="สังคม"] .subject-icon { color: #8b5cf6; } /* สังคม */
+    .subject-card[data-subject="ประวัติ"] .subject-icon { color: #dc2626; } /* ประวัติ */
+    .subject-card[data-subject="ศิลปะ"] .subject-icon { color: #ec4899; } /* ศิลปะ */
+    .subject-card[data-subject="cooking lab"] .subject-icon { color: #f97316; } /* cooking lab */
+    .subject-card[data-subject="cooking studio"] .subject-icon { color: #84cc16; } /* cooking studio */
+    .subject-card[data-subject="แนะแนว"] .subject-icon { color: #6366f1; } /* แนะแนว */
+    .subject-card[data-subject="เทคโน"] .subject-icon { color: #14b8a6; } /* เทคโน */
+    .subject-card[data-subject="ชุมนุม"] .subject-icon { color: #f59e0b; } /* ชุมนุม */
+    .subject-card[data-subject="จริยะธรรม"] .subject-icon { color: #7c3aed; } /* จริยะธรรม */
+    .subject-card[data-subject="อังกฤษ"] .subject-icon { color: #ef4444; } /* อังกฤษ */
+    .subject-card[data-subject="อังกฤษเสริม"] .subject-icon { color: #dc2626; } /* อังกฤษเสริม */
+    .subject-card[data-subject="business english"] .subject-icon { color: #b91c1c; } /* business english */
+    .subject-card[data-subject="พละ"] .subject-icon { color: #059669; } /* พละ */
+    .subject-card[data-subject="สุขศึกษา"] .subject-icon { color: #0d9488; } /* สุขศึกษา */
+    .subject-card[data-subject="วิชาธุรกิจ"] .subject-icon { color: #1f2937; } /* กฎหมายธุรกิจ */
+
+    /* Loading Animation */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--primary-solid);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container { padding: 0 1rem; }
+      .subjects-grid { 
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1.5rem 0;
+      }
+      .subject-header { padding: 1rem; }
+      .assignment-item { padding: 0.75rem 1rem; }
+      
+      .back-btn {
+        left: 1rem;
+        top: 0.75rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .header-content {
+        padding-top: 3rem; /* Increased padding to prevent overlap */
+      }
+    }
+
+    /* Badge for recent assignments */
+    .recent-badge {
+      display: inline-block;
+      background: var(--success);
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    .today-badge {
+      background: var(--danger);
+    }
+
+    .yesterday-badge {
+      background: var(--warning);
+    }
+
+    /* Protection Styles */
+    * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    body {
+      -webkit-touch-callout: none;
+      -webkit-text-size-adjust: none;
+    }
+
+    .subject-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    /* Update subject colors to match calendar.html */
+    .subject-card[data-subject="จริยธรรม"] .subject-dot { background-color: #7c3aed; }
+    .subject-card[data-subject="แนะแนว"] .subject-dot { background-color: #84cc16; }
+    .subject-card[data-subject="ประวัติ"] .subject-dot { background-color: #dc2626; }
+    .subject-card[data-subject="สุขศึกษา"] .subject-dot { background-color: #14b8a6; }
+    .subject-card[data-subject="ชุมนุม"] .subject-dot { background-color: #f59e0b; }
+    .subject-card[data-subject="วิชาธุรกิจ"] .subject-dot { background-color: #1f2937; }
+    .subject-card[data-subject="คณิต"] .subject-dot { background: #3b82f6; }
+    .subject-card[data-subject="ไทย"] .subject-dot { background: #ef4444; }
+    .subject-card[data-subject="ไทยเสริม"] .subject-dot { background: #f59e0b; }
+    .subject-card[data-subject="วิทย์"] .subject-dot { background: #10b981; }
+    .subject-card[data-subject="สังคม"] .subject-dot { background: #8b5cf6; }
+    .subject-card[data-subject="ประวัติ"] .subject-dot { background: #dc2626; }
+    .subject-card[data-subject="ศิลปะ"] .subject-dot { background: #ec4899; }
+    .subject-card[data-subject="Cooking Lab"] .subject-dot { background: #f97316; }
+    .subject-card[data-subject="Cooking Studio"] .subject-dot { background: #84cc16; }
+    .subject-card[data-subject="แนะแนว"] .subject-dot { background: #6366f1; }
+    .subject-card[data-subject="เทคโน"] .subject-dot { background: #14b8a6; }
+    .subject-card[data-subject="ชุมนุม"] .subject-dot { background: #f59e0b; }
+    .subject-card[data-subject="จริยะธรรม"] .subject-dot,
+    .subject-card[data-subject="จริยธรรม"] .subject-dot { background: #7c3aed; }
+    .subject-card[data-subject="อังกฤษ"] .subject-dot { background: #ef4444; }
+    .subject-card[data-subject="อังกฤษเสริม"] .subject-dot { background: #dc2626; }
+    .subject-card[data-subject="อังกฤษ Business English"] .subject-dot { background: #b91c1c; }
+    .subject-card[data-subject="พละ"] .subject-dot { background: #059669; }
+    .subject-card[data-subject="สุขศึกษา"] .subject-dot { background: #0d9488; }
+    .subject-card[data-subject="วิชาธุรกิจ"] .subject-dot { background: #1f2937; }
+  </style>
+  <!-- Font Awesome CDN -->
+  <script src="https://kit.fontawesome.com/9f295c42cb.js" crossorigin="anonymous"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <!-- Protection Script -->
+  <script>
+    // Disable right-click
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    // Disable keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Prevent F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Prevent Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U
+      if (e.ctrlKey && (
+        e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C') || 
+        e.key === 'u'
+      )) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // DevTools detection
+    let devtools = function() {};
+    devtools.toString = function() {
+      document.body.innerHTML = 'DevTools detected!';
+      return '';
+    };
+    console.log('%c', devtools);
+  </script>
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="index.html" class="back-btn">
+          <i class="fas fa-arrow-left"></i>
+          Back to Home
+        </a>
+        <h1>All Subjects</h1>
+        <p>Click on any subject to view recent assignments</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="subjects-grid" id="subjectsGrid">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPc5zKZzmre8sfAwx03x0jH3i1eVRAnec",
+      authDomain: "classweb-81bbb.firebaseapp.com",
+      projectId: "classweb-81bbb",
+      databaseURL: "https://classweb-81bbb-default-rtdb.asia-southeast1.firebasedatabase.app/",
+      storageBucket: "classweb-81bbb.firebasestorage.app",
+      messagingSenderId: "488267142455",
+      appId: "1:488267142455:web:f1c4f4fdbdfc097a3636b2"
+    };
+
+    // Initialize Firebase
+    let db;
+    let isFirebaseReady = false;
+
+    function initFirebase() {
+      try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+        isFirebaseReady = true;
+        console.log('Firebase initialized successfully');
+        loadSubjects();
+      } catch (error) {
+        console.log('Firebase initialization failed:', error);
+        loadSubjects();
+      }
+    }
+
+    // Subject list with Thai names and icons
+    const subjects = [
+      { name: 'คณิต', icon: 'fas fa-calculator', english: 'Math' },
+      { name: 'ไทย', icon: 'fas fa-language', english: 'Thai' },
+      { name: 'ไทยเสริม', icon: 'fas fa-book-reader', english: 'Thai Advanced' },
+      { name: 'วิทย์', icon: 'fas fa-atom', english: 'Science' },
+      { name: 'สังคม', icon: 'fas fa-globe-asia', english: 'Social' },
+      { name: 'ประวัติ', icon: 'fas fa-landmark', english: 'History' },
+      { name: 'ศิลปะ', icon: 'fas fa-palette', english: 'Art' },
+      { name: 'Cooking Lab', icon: 'fas fa-flask', english: 'Cooking Lab' },
+      { name: 'Cooking Studio', icon: 'fas fa-utensils', english: 'Cooking Studio' },
+      { name: 'แนะแนว', icon: 'fas fa-compass', english: 'Guidance' },
+      { name: 'เทคโน', icon: 'fas fa-cogs', english: 'Technology' },
+      { name: 'ชุมนุม', icon: 'fas fa-users', english: 'Club' },
+      { name: 'จริยะธรรม', icon: 'fas fa-heart', english: 'Ethics' },
+      { name: 'อังกฤษ', icon: 'fas fa-globe-americas', english: 'English' },
+      { name: 'อังกฤษเสริม', icon: 'fas fa-book-open', english: 'English Advanced' },
+      { name: 'อังกฤษ Business English', icon: 'fas fa-briefcase', english: 'Business English' },
+      { name: 'พละ', icon: 'fas fa-running', english: 'PE' },
+      { name: 'สุขศึกษา', icon: 'fas fa-heartbeat', english: 'Health' },
+      { name: 'วิชาธุรกิจ', icon: 'fas fa-balance-scale', english: 'Business Law' }
+    ];
+
+    let dailyReports = {};
+
+    // Initialize when page loads
+    window.addEventListener('load', initFirebase);
+
+    function loadSubjects() {
+      if (isFirebaseReady) {
+        // Load daily reports from Firebase
+        db.ref('dailyReports').orderByKey().once('value')
+          .then(snapshot => {
+            dailyReports = snapshot.val() || {};
+            renderSubjects();
+          })
+          .catch(error => {
+            console.error('Error loading reports:', error);
+            loadDemoData();
+          });
+      } else {
+        loadDemoData();
+      }
+    }
+
+    function loadDemoData() {
+      // Demo data for testing
+      dailyReports = {
+        '2024-12-20': {
+          'คณิต': 'Linear equations exercises pages 45-50',
+          'ไทย': 'Reading Thai literature article about modern poetry',
+          'อังกฤษ': 'Grammar exercises unit 5 - Present Perfect Tense',
+          'วิทย์': 'Force and motion experiment - Newton\'s laws'
+        },
+        '2024-12-19': {
+          'สังคม': 'Study Thai history - Sukhothai period chapter 3',
+          'ศิลปะ': 'Nature drawing assignment - landscape sketching',
+          'พละ': 'Basketball practice - shooting techniques',
+          'คณิต': 'Quadratic equations homework page 52-55'
+        },
+        '2024-12-18': {
+          'อังกฤษ': 'Essay writing - My future career (300 words)',
+          'วิทย์': 'Chemistry lab report - Acid and base reactions',
+          'ไทย': 'Thai poetry analysis - traditional forms',
+          'เทคโน': 'Computer programming basics - loops and conditions'
+        }
+      };
+      renderSubjects();
+    }
+
+    function renderSubjects() {
+      const grid = document.getElementById('subjectsGrid');
+      grid.innerHTML = '';
+
+      subjects.forEach((subject, index) => {
+        const assignments = getSubjectAssignments(subject.name, subject.english);
+        const card = createSubjectCard(subject, assignments, index);
+        grid.appendChild(card);
+      });
+    }
+
+    function getSubjectAssignments(subjectName, englishName) {
+      const assignments = [];
+      const today = new Date().toISOString().slice(0, 10);
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+      // Search through all daily reports
+      Object.entries(dailyReports).forEach(([date, reports]) => {
+        // Check both Thai and English names
+        if (reports[subjectName] || reports[englishName]) {
+          const content = reports[subjectName] || reports[englishName];
+          let badge = '';
+          
+          if (date === today) {
+            badge = '<span class="recent-badge today-badge">Today</span>';
+          } else if (date === yesterday) {
+            badge = '<span class="recent-badge yesterday-badge">Yesterday</span>';
+          } else {
+            const daysDiff = Math.floor((new Date(today) - new Date(date)) / (1000 * 60 * 60 * 24));
+            if (daysDiff <= 7) {
+              badge = '<span class="recent-badge">Recent</span>';
+            }
+          }
+
+          assignments.push({
+            date: date,
+            content: content,
+            badge: badge,
+            sortDate: new Date(date)
+          });
+        }
+      });
+
+      // Sort by date (most recent first)
+      return assignments.sort((a, b) => b.sortDate - a.sortDate);
+    }
+
+    function createSubjectCard(subject, assignments, index) {
+      const card = document.createElement('div');
+      card.className = 'subject-card';
+      card.setAttribute('data-subject', subject.name);
+      
+      const assignmentsList = assignments.length > 0 ? 
+        assignments.map(assignment => `
+            <div class="assignment-item">
+                <div class="assignment-date">
+                    ${formatDate(assignment.date)} ${assignment.badge}
+                </div>
+                <div class="assignment-content">${assignment.content}</div>
+            </div>
+        `).join('') : 
+        '<div class="no-assignments">No recent assignments</div>';
+
+      card.innerHTML = `
+        <div class="subject-header">
+            <i class="${subject.icon} subject-icon"></i>
+            <div class="subject-name">
+                <span class="subject-dot"></span>
+                ${subject.name}
+                <i class="fas fa-chevron-down expand-indicator"></i>
+            </div>
+            <div class="assignment-count">
+                ${assignments.length} assignment${assignments.length !== 1 ? 's' : ''}
+            </div>
+        </div>
+        <div class="assignments-list">
+            ${assignmentsList}
+        </div>
+    `;
+
+    // Fix click behavior to only affect clicked card
+    card.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent event bubbling
+        
+        // Close other expanded cards
+        document.querySelectorAll('.subject-card.expanded').forEach(otherCard => {
+            if (otherCard !== card) {
+                otherCard.classList.remove('expanded');
+            }
+        });
+        
+        // Toggle current card
+        card.classList.toggle('expanded');
+    });
+
+    return card;
+    }
+
+    function formatDate(dateStr) {
+      const options = { 
+        weekday: 'short',
+        month: 'short', 
+        day: 'numeric',
+        year: 'numeric'
+      };
+      return new Date(dateStr).toLocaleDateString('en-US', options);
+    }
+  </script>
+</body>
+</html>
