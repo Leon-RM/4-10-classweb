@@ -571,32 +571,117 @@
   <script>
     // Firebase Configuration - Replace with your own
     const firebaseConfig = {
-      apiKey: "AIzaSyDPc5zKZzmre8sfAwx03x0jH3i1eVRAnec",
-      authDomain: "classweb-81bbb.firebaseapp.com",
-      projectId: "classweb-81bbb",
-      databaseURL: "https://classweb-81bbb-default-rtdb.asia-southeast1.firebasedatabase.app/",
-      storageBucket: "classweb-81bbb.firebasestorage.app",
-      messagingSenderId: "488267142455",
-      appId: "1:488267142455:web:f1c4f4fdbdfc097a3636b2"
+      apiKey: "AIzaSyBpo5bQvKlJpJJ5hiKUjS2IpTCsjPOYdNw",
+      authDomain: "classweb-4629d.firebaseapp.com",
+      projectId: "classweb-4629d",
+      storageBucket: "classweb-4629d.firebasestorage.app",
+      messagingSenderId: "769728327744",
+      appId: "1:769728327744:web:13b8f03b6535b90a782fa5",
+      databaseURL:"https://classweb-4629d-default-rtdb.asia-southeast1.firebasedatabase.app/"
     };
 
     // Initialize Firebase (when scripts are loaded)
     let db;
     let isFirebaseReady = false;
+    let firebaseInitAttempted = false;
 
     function initFirebase() {
+      if (firebaseInitAttempted) return; // Prevent multiple initialization attempts
+      firebaseInitAttempted = true;
+      
+      console.log('Starting Firebase initialization...');
+      
+      // Check if Firebase SDK is loaded
+      if (typeof firebase === 'undefined') {
+        console.error('Firebase SDK not loaded. Check network connection and script tags.');
+        showFirebaseError('Firebase SDK not loaded. Please check your internet connection.');
+        return;
+      }
+      
       try {
+        // Check if Firebase is already initialized
+        if (firebase.apps.length > 0) {
+          console.log('Firebase already initialized, using existing instance');
+          db = firebase.database();
+          isFirebaseReady = true;
+          console.log('Firebase initialized successfully (existing instance)');
+          return;
+        }
+        
+        // Initialize new Firebase app
         firebase.initializeApp(firebaseConfig);
         db = firebase.database();
         isFirebaseReady = true;
-        console.log('Firebase initialized successfully');
+        console.log('Firebase initialized successfully (new instance)');
+        
+        // Test database connection
+        testDatabaseConnection();
+        
       } catch (error) {
-        console.log('Firebase initialization failed:', error);
+        console.error('Firebase initialization failed:', error);
+        showFirebaseError('Firebase initialization failed: ' + error.message);
       }
     }
 
+    function testDatabaseConnection() {
+      console.log('Testing database connection...');
+      
+      // Try to read a small amount of data to test connection
+      db.ref('.info/connected').once('value')
+        .then(snapshot => {
+          console.log('Database connection test successful');
+        })
+        .catch(error => {
+          console.error('Database connection test failed:', error);
+          showFirebaseError('Database connection failed: ' + error.message);
+        });
+    }
+
+    function showFirebaseError(message) {
+      console.error('Firebase Error:', message);
+      
+      // Show error message to user (optional)
+      const errorDiv = document.createElement('div');
+      errorDiv.style.cssText = `
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: #ef4444;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 10000;
+        max-width: 300px;
+        font-size: 12px;
+      `;
+      errorDiv.innerHTML = `
+        <strong>Firebase Error:</strong><br>
+        ${message}<br>
+        <small>Using demo data instead.</small>
+        <button onclick="this.parentElement.remove()" style="float: right; background: none; border: none; color: white; cursor: pointer;">×</button>
+      `;
+      document.body.appendChild(errorDiv);
+      
+      // Auto-remove after 10 seconds
+      setTimeout(() => {
+        if (errorDiv.parentElement) {
+          errorDiv.remove();
+        }
+      }, 10000);
+    }
+
     // Initialize when page loads
-    window.addEventListener('load', initFirebase);
+    window.addEventListener('load', () => {
+      console.log('Page loaded, initializing Firebase...');
+      initFirebase();
+    });
+
+    // Also try to initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFirebase);
+    } else {
+      initFirebase();
+    }
 
     // Elements
     const dailyReportsCard = document.getElementById('dailyReportsCard');
@@ -667,40 +752,69 @@
     }
 
     function loadReports() {
-      if (isFirebaseReady) {
-        db.ref('dailyReports').orderByKey().once('value')
+      console.log('Loading reports... Firebase ready:', isFirebaseReady);
+      
+      if (isFirebaseReady && db) {
+        console.log('Attempting to load reports from Firebase...');
+        
+        // Add timeout to prevent hanging
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Database request timeout')), 10000);
+        });
+        
+        const dataPromise = db.ref('dailyReports').orderByKey().once('value');
+        
+        Promise.race([dataPromise, timeoutPromise])
           .then(snapshot => {
             const reports = snapshot.val();
+            console.log('Reports loaded from Firebase:', reports);
             allFetchedReports = reports; // Store for searching
             renderReports(allFetchedReports);
           })
           .catch(error => {
-            console.error('Error loading reports:', error);
+            console.error('Error loading reports from Firebase:', error);
+            showFirebaseError('Failed to load reports: ' + error.message);
             loadDemoReports();
           });
       } else {
+        console.log('Firebase not ready, loading demo reports');
         loadDemoReports();
       }
     }
 
     function loadBlogPosts() {
-      if (isFirebaseReady) {
-        db.ref('blogPosts').orderByChild('timestamp').once('value')
+      console.log('Loading blog posts... Firebase ready:', isFirebaseReady);
+      
+      if (isFirebaseReady && db) {
+        console.log('Attempting to load blog posts from Firebase...');
+        
+        // Add timeout to prevent hanging
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Database request timeout')), 10000);
+        });
+        
+        const dataPromise = db.ref('blogPosts').orderByChild('timestamp').once('value');
+        
+        Promise.race([dataPromise, timeoutPromise])
           .then(snapshot => {
             const posts = snapshot.val();
+            console.log('Blog posts loaded from Firebase:', posts);
             allBlogPosts = posts; // Store for searching
             renderBlogPosts(posts);
           })
           .catch(error => {
-            console.error('Error loading blog posts:', error);
+            console.error('Error loading blog posts from Firebase:', error);
+            showFirebaseError('Failed to load blog posts: ' + error.message);
             loadDemoBlog();
           });
       } else {
+        console.log('Firebase not ready, loading demo blog');
         loadDemoBlog();
       }
     }
 
     function loadDemoReports() {
+      console.log('Loading demo reports...');
       const demoReports = {
         '2024-12-20': {
           'Math': 'Linear equations exercises pages 45-50',
@@ -720,6 +834,7 @@
     }
 
     function loadDemoBlog() {
+      console.log('Loading demo blog...');
       const demoPosts = {
         'post1': {
           title: 'Our Amazing Science Fair Project',
