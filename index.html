@@ -424,6 +424,23 @@
       border-color: var(--primary-bright);
       box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
     }
+    .due-date {
+      display: inline-block;
+      background: #f59e0b22;
+      color: #b45309;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      padding: 0.2rem 0.7rem;
+      margin-top: 0.3rem;
+      margin-left: 0.2rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      vertical-align: middle;
+    }
+    .due-date i {
+      margin-right: 0.3em;
+      color: #f59e0b;
+    }
   </style>
   <!-- Font Awesome CDN -->
   <script src="https://kit.fontawesome.com/9f295c42cb.js" crossorigin="anonymous"></script>
@@ -817,18 +834,18 @@
       console.log('Loading demo reports...');
       const demoReports = {
         '2024-12-20': {
-          'Math': 'Linear equations exercises pages 45-50',
-          'Thai': 'Reading Thai literature article',
+          'Math': { content: 'Linear equations exercises pages 45-50', due: '2024-12-22' },
+          'Thai': { content: 'Reading Thai literature article', due: '2024-12-21' },
           'English': 'Grammar exercises unit 5',
-          'Science': 'Force and motion experiment'
+          'Science': { content: 'Force and motion experiment', due: '2024-12-23' }
         },
         '2024-12-19': {
-          'Social': 'Study Thai history - Sukhothai period',
+          'Social': { content: 'Study Thai history - Sukhothai period', due: '2024-12-20' },
           'Art': 'Nature drawing assignment',
-          'PE': 'Basketball practice'
+          'PE': { content: 'Basketball practice', due: '2024-12-21' }
         }
       };
-      
+
       allFetchedReports = demoReports; // Store for searching
       renderReports(allFetchedReports);
     }
@@ -974,18 +991,35 @@
 
     function formatReportContent(data) {
       if (typeof data === 'string') return `<p>${data}</p>`;
-      
+
       if (typeof data === 'object') {
         return Object.entries(data)
-          .map(([subject, content]) => `
-            <div style="margin-bottom: 1rem;">
-              <strong style="color: var(--primary-solid);">${subject}:</strong>
-              <p style="margin-top: 0.5rem;">${content}</p>
-            </div>
-          `).join('');
+          .map(([subject, contentObj]) => {
+            // Support both string and object formats
+            let content, due;
+            if (typeof contentObj === 'string') {
+              content = contentObj;
+              due = null;
+            } else {
+              content = contentObj.content;
+              due = contentObj.due;
+            }
+            return `
+              <div style="margin-bottom: 1rem;">
+                <strong style="color: var(--primary-solid);">${subject}:</strong>
+                <p style="margin-top: 0.5rem;">${content}</p>
+                ${due ? `<span class="due-date"><i class="fas fa-hourglass-end"></i> Due: <b>${formatDueDate(due)}</b></span>` : ''}
+              </div>
+            `;
+          }).join('');
       }
-      
+
       return `<p>${JSON.stringify(data)}</p>`;
+    }
+
+    function formatDueDate(dateStr) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(dateStr).toLocaleDateString('en-US', options);
     }
 
     function showAddPostDialog() {
