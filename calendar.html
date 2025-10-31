@@ -274,14 +274,16 @@
     .subject-item[data-subject*="พละ"] .subject-dot { background-color: var(--pe); }
     .subject-item[data-subject*="cooking"] .subject-dot { background-color: var(--cooking); }
     .subject-item[data-subject*="เทคโน"] .subject-dot { background-color: var(--tech); }
-    .subject-item[data-subject*="ศิลปะ"] .subject-dot { background-color: var(--art); }
+  .subject-item[data-subject*="ดนตรี"] .subject-dot { background-color: var(--art); }
+    .subject-item[data-subject*="ซ่อมแซม"] .subject-dot { background-color: var(--cooking); }
+    .subject-item[data-subject*="การงาน"] .subject-dot { background-color: var(--business); }
     .subject-item[data-subject*="Business"] .subject-dot { background-color: var(--business); }
     .subject-item[data-subject*="จริยธรรม"] .subject-dot { background-color: var(--ethics); }
     .subject-item[data-subject*="แนะแนว"] .subject-dot { background-color: var(--guidance); }
     .subject-item[data-subject*="ประวัติ"] .subject-dot { background-color: var(--history); }
     .subject-item[data-subject*="สุขศึกษา"] .subject-dot { background-color: var(--health); }
     .subject-item[data-subject*="ชุมนุม"] .subject-dot { background-color: var(--club); }
-    .subject-item[data-subject="วิชาธุรกิจ"] .subject-dot { background-color: var(--law); }
+  .subject-item[data-subject="การขายเบื้องต้น"] .subject-dot { background-color: var(--law); }
 
     /* Stats Section */
     .stats-section {
@@ -522,70 +524,69 @@
   </main>
 
   <script>
-    // Schedule data
+    // Schedule data (Second semester - updated)
     const weeklySchedule = {
       'Monday': [
+        'แนะแนว',
+        'สังคม',
         'วิทย์',
         'ไทย',
-        'ไทยเสริม',
-        'Business English',
         'ชุมนุม'
       ],
       'Tuesday': [
-        'อังกฤษพื้นฐาน',
-        'สุขศึกษา',
-        'คณิต',
-        'สังคม',
-        'cooking studio',
         'พละ',
-        'อังกฤษเสริม'        // Added new period
+        'คณิต',
+        'วิทย์',
+        'อังกฤษ',
+        'ไทยเสริม',
+        'สุขศึกษา',
+        'อังกฤษเสริม'
       ],
       'Wednesday': [
-        'ประวัติ',
+        'อังกฤษ Business English',
+        'ดนตรีไทย',
         'คณิต',
-        'อังกฤษเสริม',
-        'Business English',
-        'สังคม',
-        'ไทยหลัก'
+        'ซ่อมแซมเบื้องต้น',
+        'ไทย',
+        'ประวัติ'
       ],
       'Thursday': [
-        'อังกฤษพื้นฐาน',
+        'การขายเบื้องต้น',
+        'อังกฤษเสริม',
         'เทคโน',
-        'แนะแนว',
-        'วิทย์',
-        'cooking lab',
+        'อังกฤษ',
         'จริยธรรม'
       ],
       'Friday': [
-        'cooking studio',
-        'วิชาธุรกิจ', // changed from 'กฎหมายธุรกิจ'
+        'ซ่อมแซมเบื้องต้น',
         'ไทยเสริม',
-        'ศิลปะ'
+        'อังกฤษ Business English',
+        'สังคม',
+        'การงาน'
       ]
     };
 
-    // Subject color mapping
+    // Subject color mapping (include renamed/new subjects)
     const subjectColors = {
       'คณิต': '#3b82f6',
       'ไทย': '#10b981',
       'ไทยเสริม': '#10b981',
-      'ไทยหลัก': '#10b981',
-      'อังกฤษพื้นฐาน': '#8b5cf6',
+      'อังกฤษ': '#8b5cf6',
       'อังกฤษเสริม': '#8b5cf6',
-      'Business English': '#059669',
+      'อังกฤษ Business English': '#059669',
       'วิทย์': '#f59e0b',
       'สังคม': '#ef4444',
       'พละ': '#06b6d4',
-      'cooking studio': '#f97316',
-      'cooking lab': '#f97316',
+      'ซ่อมแซมเบื้องต้น': '#f97316',
       'เทคโน': '#6366f1',
-      'ศิลปะ': '#ec4899',
+      'ดนตรีไทย': '#ec4899',
       'จริยธรรม': '#7c3aed',
       'แนะแนว': '#84cc16',
       'ประวัติ': '#dc2626',
       'สุขศึกษา': '#14b8a6',
       'ชุมนุม': '#f59e0b',
-      'วิชาธุรกิจ': '#1f2937' // changed from 'กฎหมายธุรกิจ'
+      'การขายเบื้องต้น': '#1f2937',
+      'การงาน': '#059669'
     };
 
     // Day icons
