@@ -229,10 +229,9 @@
     .subject-card[data-subject="ไทยเสริม"] .subject-icon { color: #f59e0b; } /* ไทยเสริม */
     .subject-card[data-subject="วิทย์"] .subject-icon { color: #10b981; } /* วิทย์ */
     .subject-card[data-subject="สังคม"] .subject-icon { color: #8b5cf6; } /* สังคม */
-    .subject-card[data-subject="ประวัติ"] .subject-icon { color: #dc2626; } /* ประวัติ */
-    .subject-card[data-subject="ศิลปะ"] .subject-icon { color: #ec4899; } /* ศิลปะ */
-    .subject-card[data-subject="cooking lab"] .subject-icon { color: #f97316; } /* cooking lab */
-    .subject-card[data-subject="cooking studio"] .subject-icon { color: #84cc16; } /* cooking studio */
+  .subject-card[data-subject="ประวัติ"] .subject-icon { color: #dc2626; } /* ประวัติ */
+  .subject-card[data-subject="ดนตรีไทย"] .subject-icon { color: #ec4899; } /* ดนตรีไทย */
+  .subject-card[data-subject="ซ่อมแซมเบื้องต้น"] .subject-icon { color: #f97316; } /* ซ่อมแซมเบื้องต้น */
     .subject-card[data-subject="แนะแนว"] .subject-icon { color: #6366f1; } /* แนะแนว */
     .subject-card[data-subject="เทคโน"] .subject-icon { color: #14b8a6; } /* เทคโน */
     .subject-card[data-subject="ชุมนุม"] .subject-icon { color: #f59e0b; } /* ชุมนุม */
@@ -242,7 +241,7 @@
     .subject-card[data-subject="business english"] .subject-icon { color: #b91c1c; } /* business english */
     .subject-card[data-subject="พละ"] .subject-icon { color: #059669; } /* พละ */
     .subject-card[data-subject="สุขศึกษา"] .subject-icon { color: #0d9488; } /* สุขศึกษา */
-    .subject-card[data-subject="วิชาธุรกิจ"] .subject-icon { color: #1f2937; } /* กฎหมายธุรกิจ */
+  .subject-card[data-subject="การขายเบื้องต้น"] .subject-icon { color: #1f2937; } /* การขายเบื้องต้น */
 
     /* Loading Animation */
     .loading {
@@ -330,33 +329,31 @@
       margin-right: 0.5rem;
     }
 
-    /* Update subject colors to match calendar.html */
-    .subject-card[data-subject="จริยธรรม"] .subject-dot { background-color: #7c3aed; }
-    .subject-card[data-subject="แนะแนว"] .subject-dot { background-color: #84cc16; }
-    .subject-card[data-subject="ประวัติ"] .subject-dot { background-color: #dc2626; }
-    .subject-card[data-subject="สุขศึกษา"] .subject-dot { background-color: #14b8a6; }
-    .subject-card[data-subject="ชุมนุม"] .subject-dot { background-color: #f59e0b; }
-    .subject-card[data-subject="วิชาธุรกิจ"] .subject-dot { background-color: #1f2937; }
-    .subject-card[data-subject="คณิต"] .subject-dot { background: #3b82f6; }
-    .subject-card[data-subject="ไทย"] .subject-dot { background: #ef4444; }
-    .subject-card[data-subject="ไทยเสริม"] .subject-dot { background: #f59e0b; }
-    .subject-card[data-subject="วิทย์"] .subject-dot { background: #10b981; }
-    .subject-card[data-subject="สังคม"] .subject-dot { background: #8b5cf6; }
-    .subject-card[data-subject="ประวัติ"] .subject-dot { background: #dc2626; }
-    .subject-card[data-subject="ศิลปะ"] .subject-dot { background: #ec4899; }
-    .subject-card[data-subject="Cooking Lab"] .subject-dot { background: #f97316; }
-    .subject-card[data-subject="Cooking Studio"] .subject-dot { background: #84cc16; }
-    .subject-card[data-subject="แนะแนว"] .subject-dot { background: #6366f1; }
-    .subject-card[data-subject="เทคโน"] .subject-dot { background: #14b8a6; }
-    .subject-card[data-subject="ชุมนุม"] .subject-dot { background: #f59e0b; }
-    .subject-card[data-subject="จริยะธรรม"] .subject-dot,
-    .subject-card[data-subject="จริยธรรม"] .subject-dot { background: #7c3aed; }
-    .subject-card[data-subject="อังกฤษ"] .subject-dot { background: #ef4444; }
-    .subject-card[data-subject="อังกฤษเสริม"] .subject-dot { background: #dc2626; }
-    .subject-card[data-subject="อังกฤษ Business English"] .subject-dot { background: #b91c1c; }
-    .subject-card[data-subject="พละ"] .subject-dot { background: #059669; }
-    .subject-card[data-subject="สุขศึกษา"] .subject-dot { background: #0d9488; }
-    .subject-card[data-subject="วิชาธุรกิจ"] .subject-dot { background: #1f2937; }
+  /* Update subject colors to match calendar.html */
+  .subject-card[data-subject="จริยธรรม"] .subject-dot { background-color: #7c3aed; }
+  .subject-card[data-subject="แนะแนว"] .subject-dot { background-color: #84cc16; }
+  .subject-card[data-subject="ประวัติ"] .subject-dot { background-color: #dc2626; }
+  .subject-card[data-subject="สุขศึกษา"] .subject-dot { background-color: #14b8a6; }
+  .subject-card[data-subject="ชุมนุม"] .subject-dot { background-color: #f59e0b; }
+  .subject-card[data-subject="การขายเบื้องต้น"] .subject-dot { background-color: #1f2937; }
+  .subject-card[data-subject="คณิต"] .subject-dot { background: #3b82f6; }
+  .subject-card[data-subject="ไทย"] .subject-dot { background: #ef4444; }
+  .subject-card[data-subject="ไทยเสริม"] .subject-dot { background: #f59e0b; }
+  .subject-card[data-subject="วิทย์"] .subject-dot { background: #10b981; }
+  .subject-card[data-subject="สังคม"] .subject-dot { background: #8b5cf6; }
+  .subject-card[data-subject="ดนตรีไทย"] .subject-dot { background: #ec4899; }
+  .subject-card[data-subject="ซ่อมแซมเบื้องต้น"] .subject-dot { background: #f97316; }
+  .subject-card[data-subject="แนะแนว"] .subject-dot { background: #6366f1; }
+  .subject-card[data-subject="เทคโน"] .subject-dot { background: #14b8a6; }
+  .subject-card[data-subject="ชุมนุม"] .subject-dot { background: #f59e0b; }
+  .subject-card[data-subject="จริยะธรรม"] .subject-dot,
+  .subject-card[data-subject="จริยธรรม"] .subject-dot { background: #7c3aed; }
+  .subject-card[data-subject="อังกฤษ"] .subject-dot { background: #ef4444; }
+  .subject-card[data-subject="อังกฤษเสริม"] .subject-dot { background: #dc2626; }
+  .subject-card[data-subject="อังกฤษ Business English"] .subject-dot { background: #b91c1c; }
+  .subject-card[data-subject="พละ"] .subject-dot { background: #059669; }
+  .subject-card[data-subject="สุขศึกษา"] .subject-dot { background: #0d9488; }
+  .subject-card[data-subject="การงาน"] .subject-dot { background: #059669; }
   </style>
   <!-- Font Awesome CDN -->
   <script src="https://kit.fontawesome.com/9f295c42cb.js" crossorigin="anonymous"></script>
@@ -526,7 +523,7 @@
       }, 10000);
     }
 
-    // Subject list with Thai names and icons
+    // Subject list with Thai names and icons (updated for 2nd semester)
     const subjects = [
       { name: 'คณิต', icon: 'fas fa-calculator', english: 'Math' },
       { name: 'ไทย', icon: 'fas fa-language', english: 'Thai' },
@@ -534,19 +531,19 @@
       { name: 'วิทย์', icon: 'fas fa-atom', english: 'Science' },
       { name: 'สังคม', icon: 'fas fa-globe-asia', english: 'Social' },
       { name: 'ประวัติ', icon: 'fas fa-landmark', english: 'History' },
-      { name: 'ศิลปะ', icon: 'fas fa-palette', english: 'Art' },
-      { name: 'Cooking Lab', icon: 'fas fa-flask', english: 'Cooking Lab' },
-      { name: 'Cooking Studio', icon: 'fas fa-utensils', english: 'Cooking Studio' },
+      { name: 'ดนตรีไทย', icon: 'fas fa-music', english: 'Thai Music' },
+      { name: 'ซ่อมแซมเบื้องต้น', icon: 'fas fa-wrench', english: 'Basic Repair' },
       { name: 'แนะแนว', icon: 'fas fa-compass', english: 'Guidance' },
       { name: 'เทคโน', icon: 'fas fa-cogs', english: 'Technology' },
       { name: 'ชุมนุม', icon: 'fas fa-users', english: 'Club' },
-      { name: 'จริยะธรรม', icon: 'fas fa-heart', english: 'Ethics' },
+      { name: 'จริยธรรม', icon: 'fas fa-heart', english: 'Ethics' },
       { name: 'อังกฤษ', icon: 'fas fa-globe-americas', english: 'English' },
       { name: 'อังกฤษเสริม', icon: 'fas fa-book-open', english: 'English Advanced' },
       { name: 'อังกฤษ Business English', icon: 'fas fa-briefcase', english: 'Business English' },
       { name: 'พละ', icon: 'fas fa-running', english: 'PE' },
       { name: 'สุขศึกษา', icon: 'fas fa-heartbeat', english: 'Health' },
-      { name: 'วิชาธุรกิจ', icon: 'fas fa-balance-scale', english: 'Business Law' }
+      { name: 'การขายเบื้องต้น', icon: 'fas fa-hand-holding-usd', english: 'Intro to Sales' },
+      { name: 'การงาน', icon: 'fas fa-toolbox', english: 'Work and Career' }
     ];
 
     let dailyReports = {};
@@ -606,7 +603,7 @@
         },
         '2024-12-19': {
           'สังคม': 'Study Thai history - Sukhothai period chapter 3',
-          'ศิลปะ': 'Nature drawing assignment - landscape sketching',
+          'ดนตรีไทย': 'Practice: traditional Thai music - khim and ranad exercises',
           'พละ': 'Basketball practice - shooting techniques',
           'คณิต': 'Quadratic equations homework page 52-55'
         },
